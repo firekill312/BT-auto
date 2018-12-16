@@ -1,0 +1,114 @@
+
+char data = 0;    
+int enA = 9;
+int in1 = 8;
+int in2 = 7;
+int enB = 3;
+int in3 = 5;
+int in4 = 4;
+int led = 13;
+void setup() {
+
+
+    Serial.begin(9600);     //baudrate 9600                       
+   
+pinMode(enA, OUTPUT); //enable motor1
+pinMode(enB, OUTPUT); //enable motor2
+pinMode(in1, OUTPUT); //Motor1
+pinMode(in2, OUTPUT); //Motor1
+pinMode(in3, OUTPUT); //Motor2
+pinMode(in4, OUTPUT); //Motor2
+pinMode(led, OUTPUT); //Test led om signaal te testen
+}
+
+void loop() {
+
+    if(Serial.available() > 0)      // Zend data als er data wordt ontvangen
+   {
+      data = Serial.read();        //Lees inkomende data en opslaan in data
+      Serial.print(data);          //Print waarde in data op Seriële monitor
+      Serial.print("\n");        
+      if(data == 'F')  {            // Controleert of data als waarde 'F' heeft
+         digitalWrite(in3, LOW);    //Auto gaat vooruit
+        digitalWrite(in4, HIGH);
+       
+        digitalWrite(led, HIGH);
+        analogWrite(enA, 200);
+         analogWrite(enB, 200);
+      }
+   
+      else if(data == 'B')  {       //  Controleert of data als waarde 'B' heeft
+    
+         digitalWrite(in3, HIGH);    //Auto gaat achteruit
+        digitalWrite(in4, LOW); 
+     
+        digitalWrite(led, LOW);
+        analogWrite(enA, 200);
+         analogWrite(enB, 200);
+   }
+   
+    else if(data == 'S')  {      //  Controleert of data als waarde 'S' heeft
+     digitalWrite(in3, LOW);    //Auto stopt motors
+        digitalWrite(in4, LOW); 
+        digitalWrite(in2, LOW);
+        digitalWrite(in1, LOW);
+        digitalWrite(led, LOW);
+        analogWrite(enA, 0);
+         analogWrite(enB, 0);
+}
+   if(data == 'R')  {       //  Controleert of data als waarde 'R' heeft
+       
+        digitalWrite(in2, HIGH);  //Auto gaat naar rechts
+        digitalWrite(in1, LOW);
+        digitalWrite(led, LOW);
+        analogWrite(enA, 200);
+         analogWrite(enB, 200);
+   }
+           else if(data == 'S')  {
+               digitalWrite(in2, LOW);
+        digitalWrite(in1, LOW);
+          }
+   }
+     if(data == 'L')  {        //  Controleert of data als waarde 'L' heeft
+       
+        digitalWrite(in2, LOW);   //Auto gaat naar links
+        digitalWrite(in1, HIGH);
+        digitalWrite(led, LOW);
+        analogWrite(enA, 200);
+         analogWrite(enB, 200);
+         }
+          else if(data == 'S')  {     //  Controleert of data als waarde 'S' heeft
+               digitalWrite(in2, LOW);    //Auto stopt motors
+        digitalWrite(in1, LOW);
+          }
+   }
+   
+
+/*
+ Test code zonder BT sturing
+ 
+ digitalWrite(in1, HIGH);
+digitalWrite(in2, LOW);
+analogWrite(enA, 200);
+
+//
+
+digitalWrite(in3, HIGH);
+digitalWrite(in4, LOW);
+analogWrite(enB, 200);
+
+delay(5000);
+
+
+
+// uit
+digitalWrite(in1, LOW);
+digitalWrite(in2, LOW);
+digitalWrite(in3, LOW);
+digitalWrite(in4, LOW);
+
+
+delay(5000);
+}
+*/
+
